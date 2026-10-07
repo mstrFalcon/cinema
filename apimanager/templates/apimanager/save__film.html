@@ -1,0 +1,89 @@
+{% extends 'apimanager/base.html'%}
+{% load static %}
+{% block content %}
+
+<header>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'get_films' %}">Films</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'get_persons' %}">Persons</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+  <div class = "container">
+    <div class = "text-center container">
+      <br>
+      <h2 class = "text-center">Search for your favorite Films</h2>
+      <br>
+      <form method="GET">
+        <input type = "text" name = "name" placeholder="Search..." class = "text-center">
+        <button type = "submit" class = "btn-danger btn-sm">SEARCH FILM</button>
+      </form>
+    </div>
+    <br><br>
+
+    <div class="row">
+      {% for film in all_films %}
+        <div class="col-md-4 col-sm-6 col-lg-3">
+          <div class="card">
+
+                <img class="card-img-top" src="{{ film.poster_url }}" alt="Card image cap" style="width:  auto; height: 500px;">
+                <div class="card-body text-center">
+                  <p class="card-title">{{ film.name }}</p>
+                  <hr>
+                  <p class="card-text">{{ film.name_en }}</p>
+                  <a href="/films/{{film.kinopoisk_id}}"><input
+                    type="submit"
+                    value="Learn More"
+                    class="btn btn-outline-dark"
+                    type="button"/></a>
+                </div>
+
+          </div>
+          <br><br><br>
+        </div>
+      {% endfor %}
+    </div>
+    <!--
+    {% for film in all_films %}
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <div class="text-center">
+                <img src={{film.poster_url}} class="rounded mx-auto d-block" style="width:50%;" alt="{{film.name}}">
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card border-light mb-3">
+                <div class="card-header">
+                  <h1 class="text-center">{{film.name}}</h1>
+                </div>
+                <div class="card-body">
+                  <div class="text-center">
+                    <button class="btn btn-light mx-auto" type="submit">
+                      <a href="{% url 'film_detail' film.kinopoisk_id %}" class="fs-4 text-muted">Подробнее</a>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      -->
+  </div>
+
+
+
+
+{% endblock %}

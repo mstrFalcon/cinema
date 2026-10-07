@@ -1,0 +1,126 @@
+{% extends 'apimanager/base2.html'%}
+{% load static %}
+{% block content %}
+
+<header>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary custom-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'get_films' %}">Films</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'get_persons' %}">Persons</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link btn btn-link p-0" href="{% url 'person_detail' actor.kinopoisk_id%}?refresh=true">Refresh Data</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="detail-page">
+  <div class="detail-summary">
+    <img src="{{actor.photo_url}}" class="img-thumbnail detail-poster" alt="{{actor.name}}">
+    <div class="detail-information">
+      <h1 class="text-center" style="font-size:50px; padding: 5px 0px;">{{actor.name}}</h1>
+      {% if actor.name_en %}
+        <h2 class="text-center" style="font-size:30px; padding: 0px 0px;">{{actor.name_en}}</h2>
+      {% endif %}
+      <p style="padding: 0px 10px; display: flex; font-family: Verdana; font-size: 24px"><strong>Страна:&nbsp;</strong>{{actor.country}}</p>
+      <p style="padding: 0px 10px; display: flex; font-family: Verdana; font-size: 24px"><strong>Дата рождения:&nbsp;</strong>
+        {% if actor.birthday_date %}
+          {{actor.birthday_date|date:"d F Y"}}
+        {% else %}
+          Не указана
+        {% endif %}
+      </p>
+      {% if actor.death_date %}
+        <p style="padding: 0px 10px; display: flex; font-family: Verdana; font-size: 24px">
+          <strong>Дата cмерти:&nbsp;</strong> {{actor.death_date|date:"d F Y"}}
+        </p>
+      {% endif %}
+      <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Пол:&nbsp;</strong>{{actor.gender}}</p>
+      <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Профессии:&nbsp;</strong>{{actor.profession}}</p>
+      {% if actor.age != None %}
+        <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Возраст:&nbsp;</strong>{{actor.age}}</p>
+      {% else %}
+        <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Возраст:&nbsp;</strong>нет данных</p>
+      {% endif %}
+      {% if actor.growth %}
+        <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Рост:&nbsp;</strong>{{actor.growth}} см</p>
+      {% else %}
+        <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Рост:&nbsp;</strong>нет данных</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div style="margin-top: 30px;">
+    <h5 style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:30px" >Биография</h5>
+    <p style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:24px; white-space: pre-wrap" >{{actor.biography}}</p>
+  </div>
+
+  <div style="clear: left; display:block;">
+    <h1 style="font-size:40px; padding: 15px 10px;">Работы</h1>
+    {% if movies_list %}
+      <div class="main">
+        <div class="center cards-carousel" data-carousel="cards" aria-label="Работы">
+          {% for movie in movies_list %}
+            <div>
+              <div class="card custom-card">
+                <div class="card-body text-center">
+                  <h3 class="truncate-multiline">{{ movie.name }}</h3>
+                  <h4 class="truncate-multiline"><small>({{ movie.name_lang1 }})</small></h4>
+                  <div class="divider"></div>
+                  <p><strong>Роль:</strong> {{movie.plot}}</p>
+                  <p><strong>Профессия:</strong> {{ movie.short_description }}</p>
+                  <p><strong>Рейтинг:</strong> {{ movie.kinopoisk_rating }}</p>
+                  <a href="{% url 'film_detail' movie.kinopoisk_id%}" class="btn btn-outline-primary custom-btn">Перейти к фильму</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <h3 style="padding: 10px 10px; color: gray; font-family:Verdana;"><em>Работы не указаны</em></h3>
+    {% endif %}
+  </div>
+
+  <div style="clear: left; display:block;">
+    <h1 style="font-size:40px; padding: 15px 10px;">Награды</h1>
+    {% if awards_list %}
+      <div class="main">
+        <div class="center cards-carousel" data-carousel="cards" aria-label="Награды">
+          {% for award in awards_list %}
+            <div>
+              <div class="card custom-card">
+                <div class="card-body text-center">
+                  <h3>{{ award.award_name }}</h3>
+                  <div class="divider"></div>
+                  <p><strong>Номинация:</strong> {{ award.nomination_name }}</p>
+                  <p><strong>Год:</strong> {{ award.year }}</p>
+                  {% if award.film_kinopoisk_id %}
+                    <p><strong>Название фильма:</strong> {{ award.film_name }}</p>
+                    <a href="{% url 'film_detail' award.film_kinopoisk_id %}" class="btn btn-outline-primary custom-btn">Перейти к фильму</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <h3 style="padding: 10px 10px; color: gray; font-family:Verdana;"><em>Награды не указаны</em></h3>
+    {% endif %}
+  </div>
+
+</main>
+
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends 'apimanager/base2.html'%}
+{% load static %}
+{% block content %}
+
+<style>
+    .rating-list li {
+      float: right;
+      color: #ddd;
+      padding: 10px 5px;
+    }
+
+    .rating-list li:hover,
+    .rating-list li:hover ~ li {
+      color: orange;
+    }
+
+    .rating-list {
+      display: inline-block;
+      list-style: none;
+    }
+    .checked {
+        color: orange;
+    }
+</style>
+
+
+<header>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary custom-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'get_films' %}">Films</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'get_persons' %}">Persons</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link btn btn-link p-0" href="{% url 'film_detail' film.kinopoisk_id%}?refresh=true">Refresh Data</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="detail-page">
+
+
+  <!--ФИЛЬМ-->
+    <div class="detail-summary">
+      <img src="{{film.poster_url}}" class="img-thumbnail detail-poster" alt="{{film.name}}">
+      <div class="detail-information">
+        <h1 class="text-center" style="font-size:50px; padding: 15px 0px;">{{film.name}}</h1>
+        <div class="mb-4">
+          <ul class="nav nav-tabs" id="titleTabs" role="tablist">
+            {% for language, title in lang_film_name_dict %}
+              <li class="nav-item" role="presentation">
+                <button class="nav-link {% if forloop.first %} active {% endif %}" data-bs-toggle="tab" data-bs-target="#{{ language }}" type="button">{{ language }}</button>
+              </li>
+            {% endfor %}
+          </ul>
+
+          <div class="tab-content p-3 border border-top-0" id="titleTabsContent">
+            {% for language, title in lang_film_name_dict %}
+              <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="{{language}}">{{ title }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Жанры:&nbsp;</strong>{{film.genre|default:"Не указаны"}}</p>
+        <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Дата выхода в прокат:&nbsp;</strong>
+          {% if film.date %}
+            {{film.date|date:"d E Y"}}
+          {% else %}
+            Не указана
+          {% endif %}
+        </p>
+        <p style="padding: 0px 10px; display: flex; font-family:Verdana; font-size:24px" ><strong>Продолжительность (в минутах):&nbsp;</strong>{{film.runtime|default_if_none:"Не указана"}}</p>
+        <p style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:24px; white-space: pre-wrap" ><strong>Краткое описание:&nbsp;</strong>{{film.short_description}}</p>
+        <p style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:24px; white-space: pre-wrap" ><strong>Возрастное ограничение:&nbsp;</strong>{{film.age_rating|default_if_none:"Не указано"}}</p>
+        <h4 style="padding: 5px 10px 10px; display: flex; font-family:Verdana; font-size:30px" class="card-title"><strong>Рейтинг фильма</strong></h4>
+        <div class="d-flex flex-column gap-2">
+          <div class="d-flex align-items-center gap-3 rating-row" style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:30px">
+            <strong style="min-width: 90px;">КиноПоиск</strong>
+            <span class="rating-stars" aria-hidden="true">
+            <span class="fa fa-star {% if film.kinopoisk_rating > 1.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating > 2.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating > 3.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating > 4.0 %} checked {% endif %}" ></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating > 5.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating > 6.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating > 7.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating > 8.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating > 9.0 %} checked {% endif %}" ></span>
+            <span class="fa fa-star {% if film.kinopoisk_rating >= 10.0 %} checked {% endif %}"></span>
+            </span>
+            <span class="rating-value">{% if film.kinopoisk_rating != None %}({{film.kinopoisk_rating}} / 10.0){% else %}Нет данных{% endif %}</span>
+          </div>
+          <div class="d-flex align-items-center gap-3 rating-row" style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:30px">
+            <strong style="min-width: 90px;">IMDB</strong>
+            <span class="rating-stars" aria-hidden="true">
+            <span class="fa fa-star {% if film.imdb_rating > 1.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.imdb_rating > 2.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.imdb_rating > 3.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.imdb_rating > 4.0 %} checked {% endif %}" ></span>
+            <span class="fa fa-star {% if film.imdb_rating > 5.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.imdb_rating > 6.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.imdb_rating > 7.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.imdb_rating > 8.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.imdb_rating > 9.0 %} checked {% endif %}" ></span>
+            <span class="fa fa-star {% if film.imdb_rating >= 10.0 %} checked {% endif %}"></span>
+            </span>
+            <span class="rating-value">{% if film.imdb_rating != None %}({{film.imdb_rating}} / 10.0){% else %}Нет данных{% endif %}</span>
+          </div>
+          <div class="d-flex align-items-center gap-3 rating-row" style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:30px">
+            <strong style="min-width: 90px;">TMDB</strong>
+            <span class="rating-stars" aria-hidden="true">
+            <span class="fa fa-star {% if film.tmdb_rating > 1.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.tmdb_rating > 2.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.tmdb_rating > 3.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.tmdb_rating > 4.0 %} checked {% endif %}" ></span>
+            <span class="fa fa-star {% if film.tmdb_rating > 5.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.tmdb_rating > 6.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.tmdb_rating > 7.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.tmdb_rating > 8.0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if film.tmdb_rating > 9.0 %} checked {% endif %}" ></span>
+            <span class="fa fa-star {% if film.tmdb_rating >= 10.0 %} checked {% endif %}"></span>
+            </span>
+            <span class="rating-value">{% if film.tmdb_rating != None %}({{film.tmdb_rating}} / 10.0){% else %}Нет данных{% endif %}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <h5 style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:30px" ><strong>Описание.</strong></h5>
+      <p style="padding: 5px 10px; display: flex; font-family:Verdana; font-size:24px; white-space: pre-wrap" >{{film.plot}}</p>
+      <br>
+    </div>
+
+    <!-- Сезоны и эпизоды: каждый блок управляется независимо. -->
+    {% if film.is_series and seasons %}
+    <section class="series-carousels" data-series-carousels data-current-season="{{ seasons.0.id }}">
+    <h4 class="text-center" style="font-size:50px; padding: 15px 0px;">Cезоны</h4>
+    <div class="slider-nav seasons-carousel" data-carousel="seasons" aria-label="Сезоны">
+      {% for season in seasons %}
+        <div class="season-slide">
+          <button type="button" class="card custom-card season-option{% if forloop.first %} active{% endif %}"
+                  data-season-id="{{ season.id }}" data-episodes-url="{% url 'get_episodes' season.id %}"
+                  aria-controls="episodes-carousel" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span class="card-body text-center">
+              <span class="h3 card-title">{{season.name}}</span>
+            </span>
+          </button>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="season-feedback">
+      <span class="season-spinner" data-season-spinner hidden aria-hidden="true"></span>
+      <p class="season-status" data-season-status role="status" aria-live="polite"></p>
+      <button type="button" class="btn btn-outline-primary custom-btn" data-season-retry hidden>Повторить</button>
+    </div>
+    <div id="episodes-carousel" class="slider-for episodes-carousel" data-carousel="episodes" aria-label="Эпизоды" aria-busy="false">
+      {% for episode in seasons.0.episodes.all|dictsort:"number" %}
+        <div class="episode-slide">
+          <div class="card custom-card episode-card">
+            {% if episode.poster_url %}
+              <img src="{{episode.poster_url}}" class="card-img-top episode-image" alt="Кадр эпизода {{ episode.number }}">
+            {% endif %}
+            <div class="card-body text-center">
+              {% if episode.number %}
+                <h4 class="card-title">Эпизод {{episode.number}}</h4>
+              {% endif %}
+              <div class="divider"></div>
+              <h3 class="card-title">{{episode.name|default:episode.name_en|default:"Без названия"}}</h3>
+              {% if episode.description or episode.description_en %}
+                <div class="divider"></div>
+                <p class="line-clamp-4">{{episode.description|default:episode.description_en}}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <p class="text-center" data-episodes-empty{% if seasons.0.episodes.all %} hidden{% endif %}>Эпизоды этого сезона пока не добавлены.</p>
+    </section>
+    {% elif film.is_series %}
+    <p class="text-center">Информация о сезонах пока не добавлена.</p>
+    {% endif %}
+
+    <!--СКРИНШОТЫ-->
+    {% if screenshots %}
+    <h2 class="text-center" style="font-size:50px; padding: 30px 0px 5px;">Скриншоты</h2>
+    <div style="margin-top: 30px;">
+      <div class="custom-carousel screenshot-carousel mx-auto" data-carousel="images" aria-label="Скриншоты">
+        {% for screenshot in screenshots %}
+          <a href="{{ screenshot.photo_url }}" data-fancybox="gallery">
+            <img src="{{ screenshot.photo_url }}" class="img-thumbnail" alt="Кадр из фильма {{ film.name }}">
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!--ТРЕЙЛЕРЫ-->
+    {% if trailers %}
+    <h2 class="text-center" style="font-size:50px; padding: 30px 0px 5px;">Трейлеры</h2>
+      <div style="margin-top: 30px;">
+        <div class="custom-carousel trailer-carousel mx-auto" data-carousel="trailers" aria-label="Трейлеры">
+          {% for trailer in trailers %}
+            <div class="trailer-slide">
+              <div class="video-wrapper">
+                <iframe src="{{ trailer.video_url }}" title="Трейлер {{ forloop.counter }}" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!--АКТЕРЫ-->
+      <div style="clear: left; display:block;">
+        <h1 style="font-size:40px; padding: 15px 10px;">Актеры</h1>
+        {% if actors %}
+          <div class="main">
+            <div class="center cards-carousel" data-carousel="cards" aria-label="Актёры">
+              {% for x in actors %}
+                <div>
+                  <div class="card custom-card">
+                    <img src="{{x.photo_url}}" class="card-img-top person-card-image" alt="{{x.name}}">
+                    <div class="card-body text-center">
+                      <div class="divider"></div>
+                      <h3 class="card-title">{{x.name}}</h3>
+                      <h4 class="card-title">Профессия: {{x.profession}}</h4>
+                      <h4 class="card-title line-clamp-2">Роль: {{x.role}}</h4>
+                      <div class="divider"></div>
+                      <a href="{% url 'person_detail' x.kinopoisk_id %}" class="btn btn-outline-primary custom-btn">Подробнее</a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <h3 style="padding: 10px 10px; color: gray; font-family:Verdana;"><em>Актеры не указаны</em></h3>
+        {% endif %}
+      </div>
+
+
+    <!--РЕЖИССЕРЫ-->
+      <div style="clear: left; display:block;">
+        <h1 style="font-size:40px; padding: 15px 10px;">Режиссеры</h1>
+        {% if directors %}
+          <div class="main">
+            <div class="center cards-carousel" data-carousel="cards" aria-label="Режиссёры">
+              {% for x in directors %}
+                <div>
+                  <div class="card custom-card">
+                    <img src="{{x.photo_url}}" class="card-img-top person-card-image" alt="{{x.name}}">
+                    <div class="card-body text-center">
+                      <div class="divider"></div>
+                      <h3 class="card-title">{{x.name}}</h3>
+                      <h4 class="card-title">Профессия: {{x.profession}}</h4>
+                      <h4 class="card-title line-clamp-2">Роль: {{x.role}}</h4>
+                      <div class="divider"></div>
+                      <a href="{% url 'person_detail' x.kinopoisk_id %}" class="btn btn-outline-primary custom-btn">Подробнее</a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <h3 style="padding: 10px 10px; color: gray; font-family:Verdana;"><em>Режиссеры не указаны</em></h3>
+        {% endif %}
+      </div>
+
+</main>
+
+{% endblock %}

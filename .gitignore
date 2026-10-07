@@ -1,0 +1,43 @@
+# Local secrets; the template belongs in Git.
+.env
+.env.*
+!.env.example
+
+# Virtual environments and Python output.
+.venv*/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Local Django data and generated output.
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-journal
+*.log
+media/
+staticfiles/
+
+# Editor settings and test caches.
+.idea/
+.vscode/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Project backups and OS files.
+*.rar
+*.zip
+*.7z
+*.tar
+*.tar.gz
+.DS_Store
+Thumbs.db

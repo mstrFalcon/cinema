@@ -1,0 +1,2 @@
+class KinopoiskAPIError(Exception):
+    pass

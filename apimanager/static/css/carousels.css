@@ -1,0 +1,151 @@
+/* Scoped overrides for the original global Slick rules in style.css. */
+.detail-page { min-width: 0; overflow-wrap: anywhere; }
+.detail-summary { display: flex; align-items: flex-start; }
+.detail-poster { width: min(40%, 600px); height: auto; padding: 10px; }
+.detail-information { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.rating-row { flex-wrap: wrap; }
+.rating-stars { display: inline-flex; gap: 2px; }
+.rating-value { white-space: nowrap; }
+
+[data-carousel] {
+  width: calc(100% - 112px);
+  max-width: none;
+  min-width: 0;
+  margin: 24px auto;
+  position: relative;
+}
+
+/* Horizontal scrolling remains usable if the plugin fails to load. */
+[data-carousel]:not(.slick-initialized) {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+[data-carousel]:not(.slick-initialized) > * {
+  flex: 0 0 min(100%, 288px);
+  scroll-snap-align: start;
+}
+[data-carousel="episodes"]:not(.slick-initialized) > *,
+[data-carousel="images"]:not(.slick-initialized) > *,
+[data-carousel="trailers"]:not(.slick-initialized) > * { flex-basis: 100%; }
+
+[data-carousel] .slick-track { display: block; }
+[data-carousel] .slick-slide { display: block !important; height: auto !important; }
+[data-carousel] .slick-list { padding: 8px 0; }
+[data-carousel] .slick-list.draggable { cursor: grab; }
+[data-carousel] .slick-list.draggable:active,
+[data-carousel] .slick-list.draggable:active * { cursor: grabbing; }
+[data-carousel] img { -webkit-user-drag: none; user-select: none; }
+.cards-carousel,
+.seasons-carousel { --carousel-min-slide-width: 300px; }
+.cards-carousel .slick-track,
+.seasons-carousel .slick-track { display: flex; align-items: stretch; }
+.cards-carousel .slick-slide,
+.seasons-carousel .slick-slide { display: flex !important; padding: 6px; }
+.cards-carousel .card,
+.seasons-carousel .card { width: 100%; min-width: 0; margin: 0 auto; }
+.cards-carousel .card-body { display: flex; flex-direction: column; overflow-wrap: anywhere; }
+.cards-carousel .card-body .btn { margin-top: auto; }
+.cards-carousel .divider { flex-shrink: 0; }
+.person-card-image { width: 100%; height: clamp(240px, 25vw, 420px); padding: 10px; object-fit: cover; }
+
+[data-carousel] .slick-prev,
+[data-carousel] .slick-next {
+  display: block;
+  width: 40px;
+  height: 40px;
+  top: 50%;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-text-body-unfocus);
+  color: white;
+  font: 32px/36px Arial, sans-serif;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+[data-carousel] .slick-prev { left: -48px; }
+[data-carousel] .slick-next { right: -48px; }
+[data-carousel] .slick-prev::before,
+[data-carousel] .slick-next::before { content: none; }
+[data-carousel] .slick-prev:hover,
+[data-carousel] .slick-next:hover { background: var(--color-text-body-focus); }
+[data-carousel] .slick-disabled { opacity: .35; cursor: default; }
+[data-carousel] .slick-hidden { display: none; }
+[data-carousel] button:focus-visible {
+  outline: 3px solid var(--color-text-body-focus);
+  outline-offset: 3px;
+}
+[data-carousel] .slick-dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin: 12px 0;
+  list-style: none;
+}
+[data-carousel] .slick-dots button {
+  width: 28px;
+  height: 28px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  font-size: 0;
+  cursor: pointer;
+}
+[data-carousel] .slick-dots button::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-text-body-unfocus);
+  opacity: .4;
+}
+[data-carousel] .slick-dots .slick-active button::before { opacity: 1; }
+
+.screenshot-carousel { max-width: 860px; max-height: none; }
+.screenshot-carousel img { width: 100%; height: auto; max-height: 450px; padding: 10px; object-fit: contain; float: none; }
+.trailer-carousel { max-width: 960px; }
+.episodes-carousel { max-width: 600px; transition: opacity .2s; }
+.episodes-carousel[aria-busy="true"] { opacity: .55; }
+.episodes-carousel .episode-image { height: auto; object-fit: contain; }
+.season-option { border: 1px solid #d1bfa3; cursor: pointer; }
+.season-option .card-body { width: 100%; }
+.season-option .card-title { display: block; margin: 0; }
+.season-option.is-loading { box-shadow: 0 0 0 3px var(--color-text-body-unfocus); }
+.season-feedback { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 16px; }
+.season-status { min-height: 1.5em; margin: 0; text-align: center; }
+.season-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #d1bfa3;
+  border-top-color: var(--color-text-body-focus);
+  border-radius: 50%;
+  animation: season-spin .75s linear infinite;
+}
+.series-carousels [hidden] { display: none !important; }
+@keyframes season-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 992px) {
+  .detail-summary { flex-direction: column; }
+  .detail-poster { width: min(100%, 600px); margin: auto; }
+  .detail-information { width: 100%; }
+  .detail-information > p { display: block !important; }
+}
+@media (max-width: 575px) {
+  .rating-row strong { flex-basis: 100%; }
+  .rating-stars { font-size: 20px; }
+  .rating-value { font-size: 22px; }
+  [data-carousel] { width: calc(100% - 96px); }
+  [data-carousel] .slick-prev { left: -44px; }
+  [data-carousel] .slick-next { right: -44px; }
+  .person-card-image { height: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .season-spinner { animation: none; }
+  .episodes-carousel { transition: none; }
+}

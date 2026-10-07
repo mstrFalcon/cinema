@@ -1,0 +1,144 @@
+{% extends 'apimanager/base.html'%}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/api-feedback.css' %}">
+{% endblock %}
+{% block content %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const flips = document.querySelectorAll('.image-flip');
+
+    flips.forEach(flip => {
+        const front = flip.querySelector('.frontside');
+        const back = flip.querySelector('.backside');
+
+        // Получаем реальные размеры frontside
+        const frontHeight = front.offsetHeight;
+        const frontWidth = front.offsetWidth;
+
+        // Устанавливаем те же размеры backside
+        back.style.height = frontHeight + 'px';
+        back.style.width = frontWidth + 'px';
+
+        // Чтобы внутренняя карточка тоже растянулась
+        const backCard = back.querySelector('.card');
+        if (backCard) {
+            backCard.style.height = frontHeight + 'px';
+        }
+    });
+});
+</script>
+
+
+<header>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary custom-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'get_films' %}">Films</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'get_persons' %}">Persons</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+<section id="team" class="pb-5">
+    <div class="container">
+        <div class = "text-center container">
+          <br>
+          <h2 class = "text-center">Search for your favorite Films</h2>
+          <br>
+          <form method="GET">
+            <div class="input-group mb-3">
+                <input type="text" name = "name" class="form-control" placeholder="Поиск..." value="{{ request.GET.name|default:'' }}">
+                <button type = "submit" class = "btn btn-outline-primary custom-btn">SEARCH FILM</button>
+            </div>
+          </form>
+          {% include 'apimanager/includes/api_error.html' %}
+          {% if search_performed and not api_error and not all_films %}
+          <p class="mt-3" role="status">Ничего не найдено. Попробуйте изменить запрос.</p>
+          {% endif %}
+        </div>
+        <br><br>
+
+        <div class="row">
+          {% for film in all_films %}
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" >
+                    <div class="mainflip flip-0">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <img class="card-img-top" src="{{ film.poster_url }}" alt="Card image cap" style="max-width: 100%; width: auto; height: 500px; object-fit: contain;">
+                                    <div class="divider"></div>
+                                    <h3 class="card-title">{{film.name}}</h3>
+                                    <h4 class="card-text">{{film.name_lang1}}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="backside">
+                            <div class="card">
+                                <div class="card-body text-center mt-4">
+                                    <h3 class="card-title">{{film.name}}</h3>
+                                    <div class="divider"></div>
+                                    <h5 class="card-text">{{film.date}}</h5>
+                                    <h5 class="card-text">Кинопоиск: {{film.kinopoisk_rating}}</h5>
+                                    <h5 class="card-text">IMDB: {{film.imdb_rating}}</h5>
+                                    <p class="card-text text-truncate-custom">{{film.plot}}</p>
+                                    <a href="{% url 'film_detail' film.kinopoisk_id%}"><input
+                                        type="submit"
+                                        value="Подробнее"
+                                        class="btn btn-outline-primary custom-btn"
+                                        type="button"/></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ./Team member -->
+          {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% if page_start != -1 %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        {% if page_current > page_start %}
+          {% with prev_page=page_current|add:"-1" %}
+            <a class="page-link" href="{% url 'get_films' %}?page={{prev_page}}&name={{ request.GET.name|urlencode }}" tabindex="-1">Previous</a>
+          {% endwith %}
+        {% else %}
+          <a class="page-link disabled" href="#" tabindex="-1">Previous</a>
+        {% endif %}
+
+        {% for page in page_range%}
+            {% if page == page_current %}
+                <li class="page-item active"><a class="page-link" href="{% url 'get_films' %}?page={{page}}&name={{ request.GET.name|urlencode }}">{{ page }}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="{% url 'get_films' %}?page={{page}}&name={{ request.GET.name|urlencode }}">{{ page }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_current < page_end  %}
+          {% with next_page=page_current|add:"+1" %}
+            <a class="page-link" href="{% url 'get_films' %}?page={{next_page}}&name={{ request.GET.name|urlencode }}" tabindex="-1">Next</a>
+          {% endwith %}
+        {% else %}
+          <a class="page-link disabled" href="#" tabindex="-1">Next</a>
+        {% endif %}
+      </ul>
+    </nav>
+{% endif %}
+
+{% endblock %}

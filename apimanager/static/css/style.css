@@ -1,0 +1,488 @@
+/* FontAwesome for working BootSnippet :> */
+
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+:root{
+  --color-background-body: #ffecd6; /* #f6f0da*/
+  --color-background-card: #fff6eb;
+  --color-background-card2: #f8f1e4;
+  --color-background-navbar: #ffdcbd;
+  --color-text-body-unfocus: #A64527;
+  --color-text-body-focus: #5e2418;
+  --color-text-navbar-unfocus: #A65627;
+  --color-text-navbar-focus: #774120;
+}
+
+body, #team {
+    background: var(--color-background-body) !important;
+    color: var(--color-text-body-focus) !important;
+}
+
+.custom-navbar {
+    background-color: var(--color-background-navbar) !important;
+}
+
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link,
+.custom-navbar .navbar-toggler-icon {
+    color: var(--color-text-navbar-unfocus) !important;
+}
+
+.custom-navbar .navbar-brand:hover,
+.custom-navbar .nav-link:hover,
+.custom-navbar .navbar-brand:focus,
+.custom-navbar .nav-link:focus,
+.custom-navbar .navbar-brand:active,
+.custom-navbar .nav-link:active,
+.custom-navbar .navbar-toggler-icon:focus,
+.custom-navbar .navbar-toggler-icon:active {
+    color: var(--color-text-navbar-focus) !important;
+}
+
+.btn-outline-primary.custom-btn {
+  color: var(--color-text-body-unfocus) !important; /* Цвет текста */
+  border-color: var(--color-text-body-unfocus) !important; /* Цвет рамки */
+}
+
+.btn-outline-primary.custom-btn:hover,
+.btn-outline-primary.custom-btn:focus {
+  background-color: var(--color-text-body-focus) !important; /* Цвет фона при наведении */
+  color: var(--color-background-card) !important; /* Цвет текста при наведении */
+  border-color: var(--color-text-body-focus) !important;
+}
+
+/* Общий стиль для ссылок в пагинации */
+.pagination .page-link {
+  color: var(--color-text-body-unfocus); /* обычный текст */
+  border: 1px solid var(--color-text-body-unfocus);
+  background-color: transparent;
+}
+
+/* При наведении */
+.pagination .page-link:hover {
+  background-color: var(--color-text-body-focus);
+  color: white;
+  border-color: var(--color-text-body-focus);
+}
+
+/* Активная страница */
+.pagination .page-item.active .page-link {
+  background-color: var(--color-text-body-unfocus);
+  border-color: var(--color-text-body-unfocus);
+  color: white;
+}
+
+/* Disabled-кнопки (Previous, Next) */
+.pagination .page-link.disabled,
+.pagination .page-item.disabled .page-link {
+  color: #bbb;
+  pointer-events: none;
+  background-color: #f5f5f5;
+  border-color: #ddd;
+}
+
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--color-text-body-focus);
+    border-color: var(--color--text-body-focus);
+    box-shadow: none;
+    outline: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: var(--color-text-body-unfocus);
+    border-color: var(--color-text-body-unfocus);
+}
+
+section {
+    padding: 60px 0;
+}
+
+section .section-title {
+    text-align: center;
+    color: var(--color-text-body-unfocus);
+    margin-bottom: 50px;
+    text-transform: uppercase;
+}
+
+#team .card {
+    border: none;
+    background: var(--color-background-card);
+}
+
+.image-flip:hover .backside,
+.image-flip.hover .backside {
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+    border-radius: .25rem;
+}
+
+.image-flip:hover .frontside,
+.image-flip.hover .frontside {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+.mainflip {
+    -webkit-transition: 1s;
+    -webkit-transform-style: preserve-3d;
+    -ms-transition: 1s;
+    -moz-transition: 1s;
+    -moz-transform: perspective(1000px);
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transition: 1s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.frontside {
+    position: relative;
+    -webkit-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    z-index: 2;
+    margin-bottom: 30px;
+}
+
+.backside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+    -webkit-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+    -moz-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+    box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+}
+
+.frontside,
+.backside {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition: 1s;
+    -webkit-transform-style: preserve-3d;
+    -moz-transition: 1s;
+    -moz-transform-style: preserve-3d;
+    -o-transition: 1s;
+    -o-transform-style: preserve-3d;
+    -ms-transition: 1s;
+    -ms-transform-style: preserve-3d;
+    transition: 1s;
+    transform-style: preserve-3d;
+}
+
+.frontside .card,
+.backside .card {
+    min-height: 312px;
+}
+
+.backside .card a {
+    font-size: 18px;
+    color: var(--color-text-body-unfocus) !important;
+}
+
+.frontside .card .card-title,
+.backside .card .card-title {
+    color: var(--color-text-body-unfocus) !important;
+}
+
+.frontside .card .card-body img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+}
+
+.text-truncate-custom {
+  max-height: 350px;        /* Ограничивает высоту блока */
+  overflow: hidden;         /* Скрывает лишний текст */
+  text-overflow: ellipsis;  /* Добавляет "..." */
+  display: -webkit-box;
+  -webkit-line-clamp: 8;     /* Максимум 5 строк */
+  -webkit-box-orient: vertical;
+}
+
+/* SLIDER */
+
+.center {
+  width: 90%;
+  margin: 0 auto;
+  overflow: visible;
+  position: relative; /* важно для позиционирования стрелок */
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 1000;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--color-text-body-unfocus);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 0;
+  cursor: pointer;
+  outline: none; /* убираем синий контур при фокусе */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  font-size: 20px;
+  color: white;
+}
+
+/* При наведении — чуть ярче */
+.slick-prev:hover,
+.slick-next:hover,
+.slick-prev:focus,
+.slick-next:focus,
+.slick-prev:active,
+.slick-next:active {
+  background-color: var(--color-text-body-focus); /* более насыщенный */
+  transform: translateY(-50%) scale(1.05); /* лёгкое увеличение */
+}
+
+.slick-prev {
+  left: -50px;
+}
+
+.slick-next {
+  right: -50px;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  font-size: 20px;
+  color: white;
+  line-height: 40px;
+}
+
+/* Убрать отступ после */
+
+.slick-slide {
+  height: auto !important;
+  display: flex !important;
+  justify-content: center;
+}
+
+.slick-track {
+  display: flex;
+  align-items: stretch;
+}
+
+/* ACTORS AND DIRECTORS CARDS FOR FILM */
+
+.custom-card {
+  background-color: var(--color-background-card2); /* нежно-бежевый */
+  border: 1px solid #d1bfa3;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.custom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* NAV-TABS FOR DETAIL INFORMATION */
+
+/* Увеличиваем читабельность вкладок */
+.nav-tabs .nav-link {
+  font-weight: 500;
+  color: var(--color-text-body-unfocus);
+  border-radius: 0.25rem 0.25rem 0 0;
+  padding: 0.6rem 1rem;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: var(--color-background-card2);
+  color: var(--color-text-body-focus);
+  border-color: var(--color-text-body-focus) var(--color-text-body-focus) var(--color-background-card);
+}
+
+/* Общий стиль для содержимого таба */
+.tab-content {
+  background-color: var(--color-background-card2);
+  min-height: 50px; /* фиксируем высоту */
+  border: 1px solid var(--color-background-card);
+  border-top: none;
+  border-radius: 0 0 0.25rem 0.25rem;
+  padding: 1rem;
+  font-size: 1.1rem;
+  color: var(--color-text-body-focus);
+}
+
+/* Добавим плавность */
+.tab-pane {
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Если контент пустой — пусть отображается минимальная высота */
+.tab-pane:empty::before {
+  content: 'Нет информации на этом языке';
+  color: var(--color-text-body-focus);
+  font-style: italic;
+}
+
+/* Цвет текста при наведении на вкладку */
+.nav-tabs .nav-link:hover {
+  color: var(--color-text-body-focus);
+  border-color: var(--color-text-body-unfocus) var(--color-text-body-focus);
+}
+
+/* SCREENSHOTS FOR FILM */
+
+.screenshot-carousel {
+  background-color: var(--color-background-card2); /* нежно-бежевый */
+  border: 1px solid #d1bfa3;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  max-width: 40%;
+  max-height: 450px;
+  margin: 30px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Изображения внутри слайдов */
+.screenshot-carousel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* сохраняет пропорции и влезает внутрь */
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+}
+
+/* TRAILERS FOR FILM */
+
+.trailer-carousel {
+  max-width: 70%;
+  margin: 40px auto;
+  padding: 10px;
+  background-color: var(--color-background-card2);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.trailer-slide {
+  padding: 10px;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* Соотношение 16:9 */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+}
+
+/* DIVIDER */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-text-body-unfocus);
+  margin: 15px 0;
+}
+
+/* DOTS */
+
+.truncate {
+  white-space: nowrap;         /* одна строка */
+  overflow: hidden;            /* скрыть лишнее */
+  text-overflow: ellipsis;     /* добавить "..." */
+}
+
+.truncate-multiline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;       /* количество строк */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* SLIDER EPISODE&SEASON */
+
+/* Обёртка для правильного позиционирования */
+.slider-for {
+  width: 90%;
+  position: relative;
+  max-width: 600px; /* или нужная ширина */
+  margin: 0 auto;   /* центрирует слайдер */
+}
+
+.slider-nav {
+  width: 90%;
+  position: relative;
+  max-width: 1500px; /* или нужная ширина */
+  margin: 0 auto;   /* центрирует слайдер */
+}
+
+/* EPISODE CARD */
+
+.episode-card {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.episode-image {
+  width: 100%;
+  height: auto;
+  max-height: 550px;
+  object-fit: cover;
+}
+
+/* CUSTOM CARD */
+
+.card.custom-card {
+  color: var(--color-text-body-focus);
+}
+
+.card.custom-card.active  {
+  background-color: var(--color-text-body-focus);
+  color: var(--color-background-card2);
+  transition: all 0.3s ease;
+}

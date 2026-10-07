@@ -1,0 +1,21 @@
+{% extends 'apimanager/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/api-feedback.css' %}">
+{% endblock %}
+
+{% block content %}
+<header>
+    <nav class="navbar custom-navbar" aria-label="Основная навигация">
+        <div class="container-fluid api-error-nav">
+            <a class="navbar-brand" href="{% url 'get_films' %}">Films</a>
+            <a class="nav-link" href="{% url 'get_persons' %}">Persons</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container api-error-page">
+    {% include 'apimanager/includes/api_error.html' %}
+</main>
+{% endblock %}

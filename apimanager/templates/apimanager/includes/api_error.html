@@ -1,0 +1,18 @@
+{% load static %}
+{% if api_error %}
+<div class="api-feedback" role="alert" aria-labelledby="api-error-title">
+    <h2 id="api-error-title" class="api-feedback__title">{{ error_title }}</h2>
+    <p class="api-feedback__message">{{ error_message }}</p>
+    <div class="api-feedback__actions">
+        <a class="api-feedback__retry" href="{{ retry_url }}" aria-describedby="api-retry-status">
+            <span class="api-feedback__spinner" aria-hidden="true"></span>
+            <span class="api-feedback__retry-label">Повторить</span>
+        </a>
+        {% if search_view %}
+        <a class="api-feedback__back" href="{% url search_view %}">Вернуться к поиску</a>
+        {% endif %}
+    </div>
+    <p id="api-retry-status" class="api-feedback__status" role="status" aria-live="polite" aria-atomic="true"></p>
+</div>
+<script src="{% static 'js/api-feedback.js' %}" defer></script>
+{% endif %}
